@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name ="statistics")
@@ -27,4 +25,36 @@ public class Statistics {
 
     @Column
     private Double averageReadingTime;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Integer getBooksRead() {
+        return booksRead;
+    }
+
+    public void setBooksRead(Integer booksRead) {
+        this.booksRead = booksRead;
+    }
+
+    public Double getAverageReadingTime() {
+        return averageReadingTime;
+    }
+
+    public void setAverageReadingTime(Double averageReadingTime) {
+        this.averageReadingTime = averageReadingTime;
+    }
 }

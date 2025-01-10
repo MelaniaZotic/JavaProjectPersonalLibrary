@@ -31,8 +31,9 @@ public class LibraryController {
         return bookService.createBook(book);
     }
 
-//    @PutMapping("/books/{id}/progress")
-//    public Book updateProgress(@PathVariable Long id, @RequestBody @Valid BookProgressDto progressDto) {
-//        return libraryService.updateReadingProgress(id, progressDto.getProgress());
-//    }
+    @Operation(summary = "Update book progress", description = "Update the reading progress of a book by ID.")
+    @PutMapping("/books/{id}/progress")
+    public Book updateProgress(@PathVariable Long id, @RequestBody @Valid Double progress) {
+        return bookService.updateReadingProgress(id, progress);
+    }
 }
