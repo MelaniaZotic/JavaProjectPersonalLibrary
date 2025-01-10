@@ -10,12 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class BookService {
 
     @Autowired
     private BookRepository bookRepository;
 
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
 
     @Transactional
     public Book findBookByTitle(String title) {

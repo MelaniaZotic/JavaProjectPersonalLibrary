@@ -1,6 +1,5 @@
 package com.example.JavaProjectPersonalLibrary.entities;
 
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -15,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name ="users")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +30,19 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @NotBlank(message = "Password is mandatory")
+    @Size(min = 6, message = "Password must be at least 6 characters")
+    @Column(nullable = false)
+    private String password;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Role> roles;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Wishlist wishlist;
 
@@ -42,60 +54,4 @@ public class User {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Statistics statistics;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Wishlist getWishlist() {
-        return wishlist;
-    }
-
-    public void setWishlist(Wishlist wishlist) {
-        this.wishlist = wishlist;
-    }
-
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
-
-    public Statistics getStatistics() {
-        return statistics;
-    }
-
-    public void setStatistics(Statistics statistics) {
-        this.statistics = statistics;
-    }
 }
