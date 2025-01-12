@@ -6,26 +6,27 @@ import com.example.JavaProjectPersonalLibrary.entities.dto.RegisterDTO;
 import com.example.JavaProjectPersonalLibrary.repositories.UserRepository;
 import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class AuthService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private  UserRepository userRepository;
+    private  PasswordEncoder passwordEncoder;
 
     public void register(RegisterDTO registerDTO) {
         if (userRepository.existsByEmail(registerDTO.getEmail())) {
             throw new EntityExistsException("User with this email already exists!");
         }
 
-        User user = User.builder()
-                .name(registerDTO.getName())
-                .email(registerDTO.getEmail())
-                .password(passwordEncoder.encode(registerDTO.getPassword()))
-                .build();
+        User user = new User(
+                registerDTO.getName(),
+                registerDTO.getEmail(),
+                passwordEncoder.encode(registerDTO.getPassword())
+        );
 
         userRepository.save(user);
     }

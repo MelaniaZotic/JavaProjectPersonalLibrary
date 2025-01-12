@@ -3,6 +3,7 @@ import com.example.JavaProjectPersonalLibrary.entities.Review;
 import com.example.JavaProjectPersonalLibrary.repositories.ReviewRepository;
 import com.example.JavaProjectPersonalLibrary.services.ReviewService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -28,8 +29,12 @@ class ReviewServiceTest {
     }
 
     @Test
+    @DisplayName("""
+            Given there are reviews for a specific book ID in the database
+            When getReviewsByBook is called with that book ID
+            Then it should return the list of reviews for the book
+            """)
     void testGetReviewsByBook() {
-        // Arrange
         Long bookId = 1L;
 
         Review review1 = new Review();
@@ -44,10 +49,8 @@ class ReviewServiceTest {
 
         when(reviewRepository.findAllByBookId(bookId)).thenReturn(Arrays.asList(review1, review2));
 
-        // Act
         List<Review> reviews = reviewService.getReviewsByBook(bookId);
 
-        // Assert
         assertNotNull(reviews);
         assertEquals(2, reviews.size());
         assertEquals("Great book!", reviews.get(0).getContent());
@@ -55,8 +58,12 @@ class ReviewServiceTest {
     }
 
     @Test
+    @DisplayName("""
+            Given a valid review object
+            When addReview is called with the review
+            Then it should save and return the review
+            """)
     void testAddReview() {
-        // Arrange
         Review review = new Review();
         review.setId(1L);
         review.setContent("Amazing read!");
@@ -64,10 +71,8 @@ class ReviewServiceTest {
 
         when(reviewRepository.save(review)).thenReturn(review);
 
-        // Act
         Review savedReview = reviewService.addReview(review);
 
-        // Assert
         assertNotNull(savedReview);
         assertEquals("Amazing read!", savedReview.getContent());
         assertEquals(5, savedReview.getRating());

@@ -5,6 +5,7 @@ import com.example.JavaProjectPersonalLibrary.entities.Book;
 import com.example.JavaProjectPersonalLibrary.repositories.BookRepository;
 import com.example.JavaProjectPersonalLibrary.services.BookService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -33,8 +34,12 @@ class BookServiceTest {
     }
 
     @Test
+    @DisplayName("""
+            Given a book exists with a specific title
+            When findBookByTitle is called with that title
+            Then it should return the corresponding book
+            """)
     void testFindBookByTitle() {
-        // Arrange
         String title = "Test Book";
         Book book = new Book();
         book.setTitle(title);
@@ -51,6 +56,11 @@ class BookServiceTest {
     }
 
     @Test
+    @DisplayName("""
+            Given a book exists with a specific ID
+            When updateReadingProgress is called
+            Then it should update and return the book's progress
+            """)
     void testUpdateReadingProgress() {
         // Arrange
         Long bookId = 1L;
@@ -72,25 +82,34 @@ class BookServiceTest {
     }
 
     @Test
+    @DisplayName("""
+            Given a valid book object
+            When createBook is called
+            Then it should save and return the book
+            """)
     void testCreateBook() {
-        // Arrange
+
         Book book = new Book();
         book.setTitle("New Book");
 
         when(bookRepository.save(book)).thenReturn(book);
 
-        // Act
+
         Book result = bookService.createBook(book);
 
-        // Assert
         assertNotNull(result);
         assertEquals("New Book", result.getTitle());
         verify(bookRepository, times(1)).save(book);
     }
 
     @Test
+    @DisplayName("""
+            Given books exist in the database
+            When getAllBooks is called
+            Then it should return a list of books
+            """)
     void testGetAllBooks() {
-        // Arrange
+
         Book book1 = new Book();
         book1.setTitle("Book 1");
 
@@ -99,10 +118,10 @@ class BookServiceTest {
 
         when(bookRepository.findAll()).thenReturn(Arrays.asList(book1, book2));
 
-        // Act
+
         List<Book> books = bookService.getAllBooks();
 
-        // Assert
+
         assertNotNull(books);
         assertEquals(2, books.size());
         verify(bookRepository, times(1)).findAll();
