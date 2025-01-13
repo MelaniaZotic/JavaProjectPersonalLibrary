@@ -5,7 +5,6 @@ import com.example.JavaProjectPersonalLibrary.entities.dto.LoginDTO;
 import com.example.JavaProjectPersonalLibrary.entities.dto.RegisterDTO;
 import com.example.JavaProjectPersonalLibrary.repositories.UserRepository;
 import jakarta.persistence.EntityExistsException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
