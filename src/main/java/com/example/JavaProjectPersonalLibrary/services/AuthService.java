@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     @Autowired
-    private  UserRepository userRepository;
-    private  PasswordEncoder passwordEncoder;
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public void register(RegisterDTO registerDTO) {
         if (userRepository.existsByEmail(registerDTO.getEmail())) {
@@ -39,7 +41,6 @@ public class AuthService {
             throw new IllegalArgumentException("Invalid email or password");
         }
 
-        // În loc de token real, returnăm un mesaj de succes simplificat
         return "JWT_TOKEN_PLACEHOLDER";
     }
 }
