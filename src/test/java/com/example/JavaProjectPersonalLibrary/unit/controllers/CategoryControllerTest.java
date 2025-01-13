@@ -1,7 +1,8 @@
-package com.example.JavaProjectPersonalLibrary.unit;
+package com.example.JavaProjectPersonalLibrary.unit.controllers;
 
+
+import com.example.JavaProjectPersonalLibrary.controllers.CategoryController;
 import com.example.JavaProjectPersonalLibrary.entities.Category;
-import com.example.JavaProjectPersonalLibrary.repositories.CategoryRepository;
 import com.example.JavaProjectPersonalLibrary.services.CategoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,19 +15,20 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
 
-public class CategoryServiceTest {
+class CategoryControllerTest {
+
     @Mock
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
 
     @InjectMocks
-    private CategoryService categoryService;
+    private CategoryController categoryController;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        MockitoAnnotations.openMocks(this); // Initialize mocks
     }
 
     @Test
@@ -43,15 +45,16 @@ public class CategoryServiceTest {
         Category category2 = new Category();
         category2.setName("Non-Fiction");
 
-        when(categoryRepository.findAll()).thenReturn(Arrays.asList(category1, category2));
+        when(categoryService.getAllCategories()).thenReturn(Arrays.asList(category1, category2));
 
         // Act
-        List<Category> categories = categoryService.getAllCategories();
+        List<Category> categories = categoryController.getAllCategories();
 
         // Assert
         assertNotNull(categories);
         assertEquals(2, categories.size());
-        verify(categoryRepository, times(1)).findAll();
+        assertEquals("Fiction", categories.get(0).getName());
+        verify(categoryService, times(1)).getAllCategories();
     }
 
     @Test
@@ -65,27 +68,32 @@ public class CategoryServiceTest {
         Category category = new Category();
         category.setName("Science");
 
-        when(categoryRepository.save(category)).thenReturn(category);
+        when(categoryService.addCategory(any(Category.class))).thenReturn(category);
 
         // Act
-        Category result = categoryService.addCategory(category);
+        Category result = categoryController.addCategory(category);
 
         // Assert
         assertNotNull(result);
         assertEquals("Science", result.getName());
-        verify(categoryRepository, times(1)).save(category);
+        verify(categoryService, times(1)).addCategory(any(Category.class));
     }
 
     @Test
     @DisplayName("""
-            Given a category exists in the database
-            When deleteCategory is called with the category ID
-            Then it should delete the category
+            Given a category ID
+            When deleteCategory is called
+            Then it should delete the category and perform no return
             """)
     void testDeleteCategory() {
+        // Arrange
         Long categoryId = 1L;
-        doNothing().when(categoryRepository).deleteById(categoryId);
-        categoryService.deleteCategory(categoryId);
-        verify(categoryRepository, times(1)).deleteById(categoryId);
+        doNothing().when(categoryService).deleteCategory(categoryId);
+
+        // Act
+        categoryController.deleteCategory(categoryId);
+
+        // Assert
+        verify(categoryService, times(1)).deleteCategory(categoryId);
     }
 }
