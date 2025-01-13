@@ -1,9 +1,8 @@
 package com.example.JavaProjectPersonalLibrary.unit.services;
-
-
 import com.example.JavaProjectPersonalLibrary.entities.Book;
 import com.example.JavaProjectPersonalLibrary.repositories.BookRepository;
 import com.example.JavaProjectPersonalLibrary.services.BookService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,10 +45,8 @@ class BookServiceTest {
 
         when(bookRepository.findBookByTitle(title)).thenReturn(Optional.of(book));
 
-        // Act
         Book result = bookService.findBookByTitle(title);
 
-        // Assert
         assertNotNull(result);
         assertEquals(title, result.getTitle());
         verify(bookRepository, times(1)).findBookByTitle(title);
@@ -62,7 +59,7 @@ class BookServiceTest {
             Then it should update and return the book's progress
             """)
     void testUpdateReadingProgress() {
-        // Arrange
+
         Long bookId = 1L;
         Double progress = 50.0;
         Book book = new Book();
@@ -72,10 +69,8 @@ class BookServiceTest {
         when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
         when(bookRepository.save(any(Book.class))).thenReturn(book);
 
-        // Act
         Book updatedBook = bookService.updateReadingProgress(bookId, progress);
 
-        // Assert
         assertNotNull(updatedBook);
         assertEquals(progress, updatedBook.getProgress());
         verify(bookRepository, times(1)).save(book);
@@ -93,8 +88,6 @@ class BookServiceTest {
         book.setTitle("New Book");
 
         when(bookRepository.save(book)).thenReturn(book);
-
-
         Book result = bookService.createBook(book);
 
         assertNotNull(result);
@@ -118,9 +111,7 @@ class BookServiceTest {
 
         when(bookRepository.findAll()).thenReturn(Arrays.asList(book1, book2));
 
-
         List<Book> books = bookService.getAllBooks();
-
 
         assertNotNull(books);
         assertEquals(2, books.size());

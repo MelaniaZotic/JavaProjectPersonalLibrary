@@ -45,10 +45,10 @@ public class CategoryServiceTest {
 
         when(categoryRepository.findAll()).thenReturn(Arrays.asList(category1, category2));
 
-        // Act
+
         List<Category> categories = categoryService.getAllCategories();
 
-        // Assert
+
         assertNotNull(categories);
         assertEquals(2, categories.size());
         verify(categoryRepository, times(1)).findAll();
@@ -61,16 +61,14 @@ public class CategoryServiceTest {
             Then it should save and return the category
             """)
     void testAddCategory() {
-        // Arrange
+
         Category category = new Category();
         category.setName("Science");
 
         when(categoryRepository.save(category)).thenReturn(category);
 
-        // Act
         Category result = categoryService.addCategory(category);
 
-        // Assert
         assertNotNull(result);
         assertEquals("Science", result.getName());
         verify(categoryRepository, times(1)).save(category);

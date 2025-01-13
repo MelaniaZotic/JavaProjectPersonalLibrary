@@ -28,7 +28,7 @@ class CategoryControllerTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this); // Initialize mocks
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -47,10 +47,9 @@ class CategoryControllerTest {
 
         when(categoryService.getAllCategories()).thenReturn(Arrays.asList(category1, category2));
 
-        // Act
         List<Category> categories = categoryController.getAllCategories();
 
-        // Assert
+
         assertNotNull(categories);
         assertEquals(2, categories.size());
         assertEquals("Fiction", categories.get(0).getName());
@@ -64,16 +63,15 @@ class CategoryControllerTest {
             Then it should save and return the category
             """)
     void testAddCategory() {
-        // Arrange
+
         Category category = new Category();
         category.setName("Science");
 
         when(categoryService.addCategory(any(Category.class))).thenReturn(category);
 
-        // Act
+
         Category result = categoryController.addCategory(category);
 
-        // Assert
         assertNotNull(result);
         assertEquals("Science", result.getName());
         verify(categoryService, times(1)).addCategory(any(Category.class));
@@ -86,14 +84,12 @@ class CategoryControllerTest {
             Then it should delete the category and perform no return
             """)
     void testDeleteCategory() {
-        // Arrange
         Long categoryId = 1L;
         doNothing().when(categoryService).deleteCategory(categoryId);
 
-        // Act
+
         categoryController.deleteCategory(categoryId);
 
-        // Assert
         verify(categoryService, times(1)).deleteCategory(categoryId);
     }
 }
